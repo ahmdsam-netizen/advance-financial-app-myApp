@@ -1,0 +1,79 @@
+
+generator client {
+  provider               = "prisma-client"
+  output                 = "../generated/prisma"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+}
+
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model User { 
+  id          Int     @id @default(autoincrement()) 
+  email       String  @unique
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  account               Account?
+  onRampTransactions      OnRampTransaction[]
+  ofRampTransactions    OffRampTransaction[]  
+  sentTransactions      TransferTransaction[] @relation("sentTransaction")
+  receivedTransactions  TransferTransaction[] @relation("receivedTransaction")
+}
+
+model Account {
+  id            Int @id @default(autoincrement())
+  balance        Int
+
+  ownerId       Int @unique
+  owner         User @relation(fields: [ownerId] , references: [id])
+}
+
+model OnRampTransaction {
+  id          Int @id @default(autoincrement())
+  status      RampStatus
+  token       String
+  provider    String
+  amount      Int
+  date        DateTime @default(now())
+
+  creditId    Int 
+  creditFrom  User @relation(fields: [creditId] , references: [id])
+}
+
+model OffRampTransaction {
+  id          Int @id @default(autoincrement())
+  status      RampStatus
+  token       String
+  provider    String
+  amount      Int
+  date        DateTime @default(now())
+
+  withdrawId    Int 
+  withdrawFrom  User @relation(fields: [withdrawId] , references: [id])
+}
+
+model TransferTransaction {
+  id      Int @id @default(autoincrement())
+  amount  Int
+  date    DateTime @default(now())
+
+  fromId  Int
+  toId    Int
+
+  from    User @relation("sentTransaction" , fields: [fromId] , references: [id])
+  to      User @relation("receivedTransaction" , fields: [toId] , references: [id])
+}
+
+
+enum RampStatus {
+  Succeed
+  Failed
+  Processing
+}

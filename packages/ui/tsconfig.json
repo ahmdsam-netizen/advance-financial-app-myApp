@@ -1,0 +1,9 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "strictNullChecks": true
+  },
+  "include": ["src", "../../apps/web/component/Appbar.tsx", "../../apps/web/component/Sidebar.tsx"],
+  "exclude": ["node_modules", "dist"]
+}
