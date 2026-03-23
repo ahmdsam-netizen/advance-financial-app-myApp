@@ -5,6 +5,7 @@ import { useState } from "react"
 export function Deposit() {
   const [amount , setAmount] = useState(0) ;
   const [provider , setProvider] = useState("hdfc")
+  const [message , setMessage] = useState(null)
   return (
     <div className="grid grid-cols-6 gap-6 p-6 bg-white rounded-xl shadow-md max-w-3xl">
       
@@ -60,15 +61,23 @@ export function Deposit() {
         {/* Submit */}
         <button
           onClick={ async () => {
-            const result = await axios.put("http://localhost:3000/transaction/credit" , {
-              amount : amount , 
-              provider : provider 
-            }) 
+            try {
+              const result = await axios.put("http://localhost:3000/transaction/credit" , {
+                amount : amount , 
+                provider : provider 
+              }) 
+              setMessage(result.data.message)
+              
+            } catch (error : any) {
+              setMessage(error.message)
+            }
+
           }}
           className="mt-2 px-4 py-2 bg-green-600 text-white font-medium rounded-lg shadow-md hover:bg-green-700 active:scale-95 transition"
         >
           Deposit Money
         </button>
+        {message && <div>{message}</div>}
       </div>
     </div>
   )

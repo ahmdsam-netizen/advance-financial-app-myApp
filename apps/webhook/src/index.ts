@@ -3,7 +3,7 @@ import express from "express"
 
 const app = express() ;
 
-app.post("/bankHitCredit" , async (req , res) => {
+app.post("/bankHitCredit" , async (req : any , res : any) => {
     const paymentDetail = {
         token : req.body.token ,
         amount : req.body.amount ,

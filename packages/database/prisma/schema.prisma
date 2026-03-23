@@ -38,7 +38,7 @@ model Account {
 model OnRampTransaction {
   id          Int @id @default(autoincrement())
   status      RampStatus
-  token       String
+  token       String @unique
   provider    String
   amount      Int
   date        DateTime @default(now())

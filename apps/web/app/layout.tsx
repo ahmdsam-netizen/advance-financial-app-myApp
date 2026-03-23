@@ -31,16 +31,8 @@ export default function RootLayout({
         <Provider>
           <div className="">
             <Appbar className={"w-full flex items-center justify-between px-6 py-3 bg-gray-900 text-white shadow-md"}/>
-            <div className="grid grid-cols-6">
-              <div className="col-span-1 my-auto h-screen bg-gray-900 text-white p-4">
-                <Sidebar className={"flex flex-col gap-2 m-3"} name={"Home"} path={"/"}/>
-                <Sidebar className={"flex flex-col gap-2 m-3"} name={"Transaction"} path={"/transaction-page"}/>
-                <Sidebar className={"flex flex-col gap-2 m-3"} name={"Account"} path={"/account-page"}/>
-                <Sidebar className={"flex flex-col gap-2 m-3"} name={"P2P Transfer"} path={"/transfer-page"}/>
-              </div>
-              <div className="col-span-5 bg-gray-300 h-screen">
-                {children}
-              </div>
+            <div>
+              {children}
             </div>
           </div>
         </Provider>

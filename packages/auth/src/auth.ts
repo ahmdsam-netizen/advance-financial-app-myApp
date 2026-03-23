@@ -5,7 +5,7 @@ import { prisma } from "../../database/src/client";
 export const NEXT_AUTH = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "text", placeholder: "sam@gmail.com" , required : true},
         password: { label: "Password", type: "password", placeholder: " * * * * *" , required : true}
@@ -31,29 +31,7 @@ export const NEXT_AUTH = {
 
         // recommend to create signup page differently
 
-        try{
-          const customer = await prisma.user.create({
-            data : {
-              email : credentials.email ,
-              password : credentials.password
-            }
-          })
-          console.log("ehll")
-          await prisma.account.create({
-            data : {
-              balance : 0 ,
-              ownerId : customer.id
-            }
-          })
-          console.log("ehldl;al")
-          return {
-            id : customer.id.toString() ,
-            email : customer.email
-          }
-        } 
-        catch(error){
-          return null ;
-        }
+        return null ;
       }
     }),
 
@@ -68,6 +46,10 @@ export const NEXT_AUTH = {
 
   ],
   secret : process.env.NEXTAUTH_SECRET ,
+  pages: {
+    signIn: "/signin",
+    newUser: "/signup"
+  },
   callbacks: {
     async jwt({ token, user, account, trigger } : any) {
 
@@ -77,12 +59,12 @@ export const NEXT_AUTH = {
             token.email = user.email;
         }
 
-        return token; // this gets encrypted and stored in cookie
+        return token ; // this gets encrypted and stored in cookie
     },
     session({ session, token } : any) {
         // use to expose data to app - get called everytime auth() or useSession() is called
         if (token.sub && session.user) {
-          session.user.id = token.sub;
+          session.user.id = token.id;
         }
 
         return session;

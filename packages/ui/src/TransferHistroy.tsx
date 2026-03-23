@@ -1,16 +1,18 @@
 "use client"
+import { useTransferStore } from "@repo/store"
 import axios from "axios"
 import { useEffect, useState } from "react"
 
 export function TransferHistory() {
     const [transactions , setTransactions] = useState(null)
+    const historyUpdate = useTransferStore(s => s.refetchTrigger)
     useEffect(() => {
         async function loader(){
             const allHistory = await axios.get("http://localhost:3000/transaction/transfer-history")
             setTransactions(allHistory.data.transactionHistory)
         }
         loader()
-    } , [])
+    } , [historyUpdate])
     
     return (
     <div className="space-y-3 w-full">

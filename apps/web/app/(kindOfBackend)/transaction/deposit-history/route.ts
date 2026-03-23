@@ -18,7 +18,6 @@ export async function GET(req : NextRequest){
         const depositList = await prisma.onRampTransaction.findMany({
             where : {creditId : intId}
         })
-        console.log("hello")
         return NextResponse.json(
             {
                 message : "Transaction history without pagination" ,
@@ -28,7 +27,6 @@ export async function GET(req : NextRequest){
         )
     } 
     catch (error) {
-        console.log("eror")
         return NextResponse.json(
             { message : "Error while fetching data" } , 
             { status : 500 }

@@ -8,5 +8,5 @@ export function Provider({children} :
         <SessionProvider>
             {children}
         </SessionProvider>
-    )
+    )  
 }

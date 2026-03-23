@@ -4,7 +4,7 @@
 
 > This application allows two different kind of user to perform online transaction easily across globe - Customer ][ Merchant
 
-## Customer - Based - Application 
+## Customer - Based - Application (NextJS application)
 
 ### Implementation -
 
@@ -15,8 +15,6 @@
 #### Home Page
 
 > Upon signIn user is redirected to Home Page 
-
-
 
 #### Transfer Page
 
@@ -50,23 +48,28 @@
 - Transfer route uses transaction to rollback if at any stage implementation fails
 - Web hook ( Backend ) - that deals banks request and update user database according and send response to back [written in express]
 
+- What are disadvantage of using middleware not getServerSession on each page ?
+- What should be logic in middleware file ?
+
 ### Problem -
 
-- No different signup page - leads to creation of unnecessary new user when user input wrong input 
-- Using redirect on initial page to redirect user to either signIn page or home-page but every time user goes to initial page it is redirected to signIn page . Why ?
-- There is no protection of page - if user is not signIn and try to go to any page directly or indirectly it does not redirect to signIn page
-- Balance doesn't update instantly upon receiving amount 
-- Transfer and Receive History does not add transfer or receive card instantly it need to be refreshed (state variable not added)
+- No different signup page - leads to creation of unnecessary new user when user input wrong input -> Solve : signup and signin page are created and signin opens everytime user is not login and is sent to api/auth/signin
+- There is no protection of page - if user is not signIn and try to go to any page directly or indirectly it does not redirect to signIn page -> Solve : there is protection
+- Transfer and Receive History does not add transfer or receive card instantly it need to be refreshed (state variable not added) -> Solve : upon sending money it re-renders - Balance card and History
 - Transfer route does not have locking feature (resolving 1 request per registered user) that could leads to negative balance if user send two simultaneous request for more than amount user holds 
+- Not able to reach initial page - don't know the reason
+- Web hook is not working properly due to package and tsconfig file - not set properly
 
 
 ### Improvement can be done -
-- Input validation
-- Different signUp page
-- Hashing of the password
-- Add Withdraw history
-- Add Searching Bar and its result
-- Type defining for object or variables using 
+- Add middlewares into your code to protect route : Done
+- Add server action for connecting backend from frontend : Learn more
+- Input validation : Need to to done
+- Different signUp page : Done
+- Hashing of the password : Not required until today
+- Add Withdraw history : Easy bit
+- Add Searching Bar and its result : Easy bit
+- Type defining for object or variables using : Is necessary but not explicitly need to learn
 
 
 ### Application 

@@ -13,7 +13,6 @@ export async function GET(req : NextRequest){
     const getAccount = await prisma.account.findFirst({
         where : {ownerId : getProfile?.id}
     })
-    console.log("request received in my Data")
     
     return NextResponse.json(
         {

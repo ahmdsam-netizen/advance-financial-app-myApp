@@ -1,5 +1,5 @@
 "use client"
-import { useAmount } from "@repo/store"
+import { useTransferStore, useAmount } from "@repo/store"
 import axios from "axios"
 import { useState } from "react"
 
@@ -8,7 +8,8 @@ export function SentMoney() {
   const [user , setUser] = useState("")
   const [amount , setAmount] = useState(0) 
   const [response , setResponse] = useState(null)
-  const updateUser = useAmount((state) => state.setUser)
+  const updateUser = useAmount(state => state.setUser)
+  const useButton = useTransferStore((s) => s.triggerRefetch)
 
   return (
     <div className="max-w-md  p-6 bg-white rounded-xl shadow-md flex flex-col gap-4">
@@ -61,6 +62,7 @@ export function SentMoney() {
             setResponse(result.data.message);
             result = await axios.get("http://localhost:3000/user/myData")
             updateUser(result.data.details)
+            useButton()
           } 
           catch (err: any) {
             setResponse(err.response?.data?.message || "Something went wrong");

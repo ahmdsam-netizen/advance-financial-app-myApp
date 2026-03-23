@@ -10,6 +10,8 @@ export async function PUT(req : NextRequest){
 
     // input validation
 
+    if(parseInt(amount) <= 0) return NextResponse.json({message : "Amount is less than expected"} , {status : 411})
+
     const session = await getServerSession(NEXT_AUTH)
 
     if(!session?.user?.id) {
@@ -18,13 +20,12 @@ export async function PUT(req : NextRequest){
     const intId = parseInt(session.user.id) 
 
     try{
-        const result = await prisma.$transaction(async (tx) => {
-            const myAccount = await prisma.account.findFirst({
+        await prisma.$transaction(async (tx) => {
+            const myAccount = await tx.account.findFirst({
                 where : {ownerId : intId}
             })
-            if (!myAccount) {
-                throw new Error("Account not found")  // throwing inside tx rolls it back
-            }
+
+            if (!myAccount) throw new Error("Account not found")
 
             // const bankResponse = await fetch("http://localhost:3003/credit" , {
             //     method : "POST" , 
@@ -38,7 +39,7 @@ export async function PUT(req : NextRequest){
             // }) ;
             // const got = await bankResponse.json() 
 
-            const result = await tx.onRampTransaction.create({
+            await tx.onRampTransaction.create({
                 data : {
                     amount : amount ,
                     status : "Processing" ,
@@ -47,14 +48,12 @@ export async function PUT(req : NextRequest){
                     creditId : intId
                 }
             })
-            console.log(result)
         })
         return NextResponse.json({
             "message" : "Fine"
         } , {status : 200}) 
     }
     catch(error){
-        console.log(error)
-        return NextResponse.json({} , {status : 500})
+        return NextResponse.json({message : "Something went wrong"} , {status : 500})
     }
 }

@@ -1,4 +1,4 @@
-import { Transfer } from "../../component/Transfer"
+import { Transfer } from "../../../component/Transfer"
 
 export default function TransferPage() {
     return (
